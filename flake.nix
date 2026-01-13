@@ -22,6 +22,9 @@
 
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     aagl.inputs.nixpkgs.follows = "nixpkgs";
+
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # 1. Capture 'inputs' in the outputs function
@@ -39,6 +42,8 @@
         cp $src/vcr_osd_mono.ttf $out/share/fonts/truetype/
       '';
     };
+    spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.system};
+
   in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       inherit system;
@@ -77,7 +82,7 @@
     homeConfigurations.jazzzium = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       # 4. Pass inputs to Home Manager
-      extraSpecialArgs = { inherit inputs vcr-osd-mono; }; 
+      extraSpecialArgs = { inherit inputs vcr-osd-mono spicePkgs; }; 
       modules = [ ./home.nix ];
     };
   };

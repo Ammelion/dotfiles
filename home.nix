@@ -1,10 +1,11 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, config, pkgs, spicePkgs, ... }:
 
 {
   # 1. Imports
   imports = [
     ./noctalia.nix
     inputs.nixcord.homeModules.nixcord
+    inputs.spicetify-nix.homeManagerModules.default
   ];
 
   # 3. Home Manager Core Settings
@@ -23,6 +24,17 @@
       }
     );
   };
+
+  programs.spicetify = {
+     enable = true;
+     enabledExtensions = with spicePkgs.extensions; [
+       adblockify
+       hidePodcasts
+       shuffle # shuffle+ (special characters are sanitized out of extension names)
+     ];
+     theme = spicePkgs.themes.catppuccin;
+     colorScheme = "mocha";
+   };
 
   programs.vscode = {
     enable = true;
