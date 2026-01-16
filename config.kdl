@@ -72,6 +72,9 @@ input {
 cursor {
     xcursor-theme "FossaCursors"
     xcursor-size 36
+
+    hide-when-typing
+    hide-when-inactive-ms 5000
 }
 
 // You can configure outputs by their name, which you can find

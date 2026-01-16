@@ -60,13 +60,27 @@
     pkgs.vlc
     pkgs.qbittorrent
     pkgs.ani-cli
+    pkgs.osu-lazer-bin
   ];
 
   # 5. Files and Environment
   home.file.".config/niri/config.kdl".source = ./config.kdl;
   home.file.".config/kitty/kitty.conf".source = ./kitty.conf;
-  home.file.".local/share/icons/FossaCursors".source = ./FossaCursors;
 
+  home.pointerCursor =
+    let
+      getLocal = name: path: {
+        gtk.enable = true;
+        x11.enable = true;
+        name = name;
+        size = 24;
+        package = pkgs.runCommand "install-cursor" { } ''
+          mkdir -p $out/share/icons
+          ln -s ${path} $out/share/icons/${name}
+        '';
+      };
+    in
+    getLocal "FossaCursors" ./FossaCursors;
   
   home.sessionVariables = {
     # EDITOR = "emacs";
